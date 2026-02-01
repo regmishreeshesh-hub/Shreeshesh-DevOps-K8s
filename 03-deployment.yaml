@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-devops
+  namespace: nginx-devops 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-devops
+  template:
+    metadata:
+      labels:
+        app: nginx-devops
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html
+          mountPath: /usr/share/nginx/html/
+          readOnly: true
+        
+      volumes:
+      - name: html
+        configMap:
+          name: nginx-devops
